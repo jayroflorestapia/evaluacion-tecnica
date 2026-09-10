@@ -1,0 +1,7 @@
+**/target/
+frontend/node_modules/
+frontend/dist/
+.tools/
+.run-logs/
+.idea/
+.vscode/*.log

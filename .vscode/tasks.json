@@ -1,0 +1,142 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Proyecto: preparar dependencias",
+      "type": "shell",
+      "command": ".\\preparar.cmd",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "API: transacciones",
+      "type": "shell",
+      "command": ".\\mvnw.cmd -pl api-transacciones spring-boot:run",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "transacciones",
+        "pattern": {
+          "regexp": "^(.*): (.*)$",
+          "file": 1,
+          "message": 2
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Scanning for projects",
+          "endsPattern": "Started ApiTransaccionesApplication"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "proyecto"
+      }
+    },
+    {
+      "label": "API: entrada",
+      "type": "shell",
+      "command": ".\\mvnw.cmd -pl api-entrada spring-boot:run",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "entrada",
+        "pattern": {
+          "regexp": "^(.*): (.*)$",
+          "file": 1,
+          "message": 2
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Scanning for projects",
+          "endsPattern": "Started ApiEntradaApplication"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "proyecto"
+      }
+    },
+    {
+      "label": "Frontend: iniciar",
+      "type": "shell",
+      "command": "npm.cmd --prefix frontend run dev",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": [
+            "/d",
+            "/c"
+          ]
+        }
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "frontend",
+        "pattern": {
+          "regexp": "^(.*): (.*)$",
+          "file": 1,
+          "message": 2
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "vite",
+          "endsPattern": "Local:.*5173"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "proyecto"
+      }
+    },
+    {
+      "label": "Proyecto: iniciar todo",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Proyecto: preparar dependencias",
+        "API: transacciones",
+        "API: entrada",
+        "Frontend: iniciar"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

@@ -13,28 +13,55 @@ Las APIs siguen una estructura MVC: `controller` recibe HTTP, `service` concentr
 ## Requisitos locales
 
 - JDK 17 (la version instalada es valida).
-- Maven 3.9 o superior, disponible como `mvn`.
-- Node.js LTS con npm (Node 20 o 22 recomendado; evita Node 24 para este ejercicio si Vite reporta incompatibilidad).
+- Maven 3.9.9 mediante el wrapper incluido: `./mvnw.cmd` en Windows. No necesitas instalar `mvn` ni agregarlo al PATH; el wrapper descarga Maven la primera vez.
+- Node.js con npm: 20.19+ de la rama 20, o 22.12+ (tambien funciona la version 24 instalada).
+- Conexion a Internet para la primera descarga de Maven y dependencias.
 
 ## Arranque
 
-Abre esta carpeta en VS Code y abre tres terminales:
+### Desde VS Code (Windows)
+
+1. Abre la carpeta completa `evaluacion tecnica` con **Archivo > Abrir carpeta**.
+2. Presiona **Ctrl+Shift+B** y ejecuta **Proyecto: iniciar todo**. Tambien esta en **Terminal > Ejecutar tarea**.
+3. La tarea prepara las dependencias y abre las dos APIs y el frontend en terminales de VS Code. Espera a que aparezca la URL del frontend.
+4. Abre `http://localhost:5173`.
+
+Para detener los servicios usa **Terminal > Finalizar tarea** para cada servicio, o Ctrl+C en cada terminal. Cuando vuelvas a abrir VS Code, repite Ctrl+Shift+B. No inicies una segunda copia si los puertos 8081, 8082 o 5173 siguen ocupados.
+
+### Desde la terminal de PowerShell
+
+Desde la raiz del proyecto, prepara las dependencias una vez (y despues de cambios en Java):
 
 ```powershell
-mvn -pl api-transacciones spring-boot:run
+.\preparar.cmd
+```
+
+Abre tres terminales en la raiz del proyecto:
+
+```powershell
+.\mvnw.cmd -pl api-transacciones spring-boot:run
 ```
 
 ```powershell
-mvn -pl api-entrada spring-boot:run
+.\mvnw.cmd -pl api-entrada spring-boot:run
 ```
 
 ```powershell
-Set-Location frontend
-npm install
-npm run dev
+npm.cmd --prefix frontend run dev
 ```
 
 Visita `http://localhost:5173`. El usuario de demostracion es `angel` y la contrasena es `Password123!`.
+
+### Si un comando falla
+
+- **`mvn` no se reconoce:** usa `.\mvnw.cmd` desde la raiz. Las dependencias se guardan en `.tools/m2-repository`.
+- **`npm.ps1` no se puede ejecutar:** usa `npm.cmd`; no es necesario cambiar la politica de ejecucion de PowerShell.
+- **No encuentra `package.json`:** ejecuta `npm.cmd --prefix frontend run dev` desde la raiz, o entra a `frontend` antes de ejecutar `npm.cmd run dev`.
+- **`vite` no se reconoce o cambiaste `package-lock.json`:** detiene el frontend y ejecuta `npm.cmd --prefix frontend ci`; despues vuelve a iniciarlo.
+- **Puerto ocupado:** detiene la instancia anterior antes de iniciar otra. El frontend usa siempre el puerto 5173 para coincidir con CORS de las APIs.
+- **Java no se reconoce:** instala un JDK 17 y reinicia VS Code para que detecte el PATH actualizado. Si defines `JAVA_HOME`, debe apuntar a la carpeta del JDK, sin `bin`.
+
+Las tareas usan `cmd.exe` y `npm.cmd` explicitamente; tu terminal personal puede seguir usando PowerShell. Las versiones del frontend estan fijadas en `package.json` y `package-lock.json`.
 
 ## Endpoints para Postman
 
